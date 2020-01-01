@@ -1,10 +1,10 @@
 'use strict'
 
 // "Imports"
-const isTracked = chrome.extension.getBackgroundPage().isTracked;
-const setTracked = chrome.extension.getBackgroundPage().setTracked;
-const getName = chrome.extension.getBackgroundPage().getName;
-const setName = chrome.extension.getBackgroundPage().setName;
+const isTracked = chrome.runtime.getBackgroundPage().isTracked;
+const setTracked = chrome.runtime.getBackgroundPage().setTracked;
+const getName = chrome.runtime.getBackgroundPage().getName;
+const setName = chrome.runtime.getBackgroundPage().setName;
 
 const trackWindowBtn = document.getElementById('trackWindow');
 const trackWindowSlider = document.getElementById('trackWindowSlider');
