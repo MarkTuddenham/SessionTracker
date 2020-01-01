@@ -11,20 +11,12 @@ chrome.runtime.getBackgroundPage(function (bgPage){
     setTracked = bgPage.setTracked;
     getName = bgPage.getName;
     setName = bgPage.setName;
+    updatePopup();
 });
 
 const trackWindowBtn = document.getElementById('trackWindow');
 const trackWindowSlider = document.getElementById('trackWindowSlider');
 const tabsList = document.getElementById('tabsList');
-
-function onPopupOpen(event) {
-    chrome.windows.getCurrent(
-        { populate: true },
-        function (win) {
-            updatePopup();
-        }
-    );
-}
 
 function updatePopup() {
     displayTrackedWindows();
@@ -147,6 +139,4 @@ function trackWindow() {
 
 }
 
-
-document.addEventListener("DOMContentLoaded", onPopupOpen);
 trackWindowSlider.addEventListener('click', trackWindow);
