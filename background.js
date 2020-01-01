@@ -28,12 +28,12 @@ function openWindow(windowId) {
                 // and track the new one instead
                 setTracked(windowId, false, function () {
                   setTracked(newWin.id, true, function () {
-                      updateWindowState(newWin.id);
-                      updateWindowState(windowId);
-                      getName(windowId, function (name){
-                        setName(newWin.id, name);
-                      }); 
+                    updateWindowState(newWin.id);
+                    updateWindowState(windowId);
+                    getName(windowId, function (name) {
+                      setName(newWin.id, name);
                     });
+                  });
                 });
               }
             );
@@ -130,6 +130,11 @@ chrome.tabs.onDetached.addListener(function (tabId, detachInfo) {
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   console.log('Updated: ' + tabId + ', Window: ' + tab.windowId);
   updateWindowState(tab.windowId);
+});
+
+chrome.tabs.onRemoved.addListener(function (tabId, removeInfo) {
+  console.log('Removed: ' + tabId + ', Window: ' + removeInfo.windowId);
+  updateWindowState(removeInfo.windowId);
 });
 
 // ~~~~~~~~~~ MESSAGES ~~~~~~~~~~
