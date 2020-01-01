@@ -3,12 +3,12 @@
 // "Imports"
 const isTracked = chrome.extension.getBackgroundPage().isTracked;
 const setTracked = chrome.extension.getBackgroundPage().setTracked;
+const getName = chrome.extension.getBackgroundPage().getName;
+const setName = chrome.extension.getBackgroundPage().setName;
 
 const trackWindowBtn = document.getElementById('trackWindow');
 const trackWindowSlider = document.getElementById('trackWindowSlider');
 const tabsList = document.getElementById('tabsList');
-
-// chrome.storage.local.clear();
 
 function onPopupOpen(event) {
     chrome.windows.getCurrent(
@@ -60,18 +60,39 @@ function displayTrackedWindows() {
 function createWindowRow(windowId) {
     let para = document.createElement('P');
 
-    let close = document.createElement('BUTTON');
-    let open = document.createElement('BUTTON');
-    close.className = 'window_action close';
-    open.className = 'window_action open';
+    let textBox = document.createElement("input");
+    let close = document.createElement('button');
+    let open = document.createElement('button');
+
+    textBox.setAttribute('class', 'window_name');
+    textBox.setAttribute('type', 'text');
+    getName(windowId, function (name) {
+        textBox.setAttribute('value', name);
+    });
+
+    close.setAttribute('class', 'window_action close');
+    open.setAttribute('class', 'window_action open');
 
     close.value = windowId;
     open.value = windowId;
 
+    textBox.addEventListener(
+        'change',
+        function () {
+            textBox.blur();
+            chrome.runtime.sendMessage({
+                type: 'rename',
+                value: textBox.value,
+                windowId
+            });
+
+        }
+    );
+
     close.addEventListener('click', closeWindow);
     open.addEventListener('click', openWindow);
 
-    para.appendChild(document.createTextNode(windowId));
+    para.appendChild(textBox);
     para.appendChild(close);
     para.appendChild(open);
     return para;
@@ -93,10 +114,7 @@ function closeWindow(event) {
     const windowId = Number(event.target.value);
     chrome.runtime.sendMessage(
         { type: 'close_window', windowId: windowId },
-        function () {
-            console.log('closed window');
-            updatePopup();
-        }
+        updatePopup
     );
 }
 

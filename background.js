@@ -1,5 +1,8 @@
 'use strict';
 
+// chrome.storage.local.clear();
+
+
 function openWindow(windowId) {
   // If window already exists then bring it to the front
   chrome.windows.get(
@@ -45,12 +48,9 @@ function openWindow(windowId) {
   );
 }
 
-
 function closeWindow(windowId, cb) {
   setTracked(windowId, false, cb);
 }
-
-
 
 function updateWindowState(windowId) {
 
@@ -65,8 +65,8 @@ function updateWindowState(windowId) {
           function (win) {
             console.log(win);
             let data = {};
-            data.left = win.left;
             data.top = win.top;
+            data.left = win.left;
             data.width = win.width;
             data.height = win.height;
             data.incognito = win.incognito;
@@ -91,24 +91,39 @@ function updateWindowState(windowId) {
 }
 
 
+function setName(windowId, name, cb) {
+  chrome.storage.local.get(
+    'names',
+    function (store) {
+      let names = store.names || {};
+      names[windowId] = name;
+      chrome.storage.local.set({ names })
+    }
+  );
+}
+
+function getName(windowId, cb) {
+  chrome.storage.local.get(
+    'names',
+    function (store) {
+      let name = store.names[windowId] || windowId;
+      cb(name);
+    }
+  );
+}
+
+
 // ~~~~~~~~~ LISTENERS ~~~~~~~~~~
 chrome.tabs.onAttached.addListener(function (tabId, attachInfo) {
   console.log('Attached: ' + tabId + ', Window: ' + attachInfo.newWindowId);
   updateWindowState(attachInfo.newWindowId);
 });
-// chrome.tabs.onCreated.addListener(function (tab) {
-//   updateWindowState(tab.windowId);
-// });
+
 chrome.tabs.onDetached.addListener(function (tabId, detachInfo) {
   console.log('Detached: ' + tabId + ', Window: ' + detachInfo.oldWindowId);
   updateWindowState(detachInfo.oldWindowId);
 });
-// chrome.tabs.onReplaced.addListener(function (addedTabId, removedTabId) {
-//   chrome.tabs.get(removedTabId,
-//     function (tab) {
-//       updateWindowState(tab.windowId);
-//     });
-// });
+
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   console.log('Updated: ' + tabId + ', Window: ' + tab.windowId);
   updateWindowState(tab.windowId);
@@ -124,6 +139,10 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
 
   } else if (msg.type == 'save_window') {
     updateWindowState(msg.windowId);
+
+  } else if (msg.type == 'rename') {
+    console.log('Rename window: ' + msg.windowId + ', value: ' + msg.value);
+    setName(msg.windowId, msg.value);
   }
 
   // force wait for sendResponse callback.
