@@ -27,10 +27,13 @@ function openWindow(windowId) {
                 // stop tracking the old window
                 // and track the new one instead
                 setTracked(windowId, false, function () {
-                  setTracked(newWin.id, true,
-                    function () {
+                  setTracked(newWin.id, true, function () {
                       updateWindowState(newWin.id);
-                    })
+                      updateWindowState(windowId);
+                      getName(windowId, function (name){
+                        setName(newWin.id, name);
+                      }); 
+                    });
                 });
               }
             );
@@ -106,8 +109,8 @@ function getName(windowId, cb) {
   chrome.storage.local.get(
     'names',
     function (store) {
-      let name = store.names[windowId] || windowId;
-      cb(name);
+      let name = store.names ? store.names[windowId] : undefined;
+      cb(name || ('Window ' + windowId));
     }
   );
 }

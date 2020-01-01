@@ -1,3 +1,8 @@
+h2 {
+  margin: 0.5rem auto;
+}
+
+
 button.window_action {
   float: right;
   background-size: cover;
@@ -21,7 +26,7 @@ p {
 }
 
 .window_name {
-  width: 50%;
+  width: 65%;
   border: none;
 }
 
