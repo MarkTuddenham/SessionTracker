@@ -2,15 +2,13 @@
 
 // "Imports"
 let isTracked = null;
-let setTracked =  null;
+let setTracked = null;
 let getName = null;
-let setName = null;
 
-chrome.runtime.getBackgroundPage(function (bgPage){
+chrome.runtime.getBackgroundPage(function (bgPage) {
     isTracked = bgPage.isTracked;
     setTracked = bgPage.setTracked;
     getName = bgPage.getName;
-    setName = bgPage.setName;
     updatePopup();
 });
 
