@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html>
-<head>
-<link rel="stylesheet" type="text/css" href="styles.css" />
-</head>
-<body>
-    <h2>Session Tracker</h2>
-    <div style="height: 1.45rem; overflow: hidden; white-space: nowrap">
-        <span style="line-height: 1.45rem;">Track this Window: </span>
 
-        <label style="line-height: 1.4rem; margin: auto 2px" class="switch">
+<head>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+</head>
+
+<body class="w-56 mx-2">
+    <h2 class="text-xl text-gray-600 my-2 mx-auto">Window Tracker</h2>
+    <div class="h-6 overflow-hidden whitespace-no-wrap">
+        <span class="leading-normal">Track this Window: </span>
+
+        <label style="line-height: 1.4rem; margin: auto 2px" class="switch float-right">
             <input type="checkbox" id='trackWindowSlider'>
             <span class="slider round"></span>
         </label>
-   </div>
-  <hr>
-  <div id="tabsList"></div>
+    </div>
 
-  <script src="popup.js"></script>
+    <hr>
+
+    <div id="tabsList"></div>
+
+    <script src="popup.js"></script>
 
 </body>
+
 </html>

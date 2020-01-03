@@ -61,17 +61,11 @@ function createWindowRow(windowId) {
     let close = document.createElement('button');
     let open = document.createElement('button');
 
-    textBox.setAttribute('class', 'window_name');
+    textBox.setAttribute('class', 'w-3/4 border-0');
     textBox.setAttribute('type', 'text');
     getName(windowId, function (name) {
         textBox.setAttribute('value', name);
     });
-
-    close.setAttribute('class', 'window_action close');
-    open.setAttribute('class', 'window_action open');
-
-    close.value = windowId;
-    open.value = windowId;
 
     textBox.addEventListener(
         'change',
@@ -85,6 +79,16 @@ function createWindowRow(windowId) {
 
         }
     );
+
+    close.setAttribute('class', 'window_action close');
+    open.setAttribute('class', 'window_action open');
+
+    close.setAttribute('title', 'Stop Tracking Window');
+    open.setAttribute('title', 'Open Window');
+
+    close.value = windowId;
+    open.value = windowId;
+
 
     close.addEventListener('click', closeWindow);
     open.addEventListener('click', openWindow);

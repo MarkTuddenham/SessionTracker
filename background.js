@@ -19,7 +19,6 @@ function openWindow(windowId) {
             console.log(savedWindow);
             // They've just asked to open this window
             // so give it focus
-            // but what if it was minimised?
             savedWindow.focused = true;
             chrome.windows.create(
               savedWindow,

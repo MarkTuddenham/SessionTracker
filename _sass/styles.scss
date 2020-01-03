@@ -1,7 +1,10 @@
-h2 {
-  margin: 0.5rem auto;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+hr {
+  @apply border-purple-700;
+}
 
 button.window_action {
   float: right;
@@ -21,19 +24,10 @@ button.open {
 }
 
 p {
-  margin-top: 6px;
-  margin-bottom: 6px;
+  @apply my-1;
 }
-
-.window_name {
-  width: 65%;
-  border: none;
-}
-
-
 
 /* The switch - the box around the slider */
-
 .switch {
   position: relative;
   display: inline-block;
