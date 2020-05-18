@@ -1,5 +1,5 @@
 const gulp = require('gulp');
-const sass_dir = '_sass';
+const sass_dir = 'sass';
 
 function css(){
     const postcss = require('gulp-postcss')
