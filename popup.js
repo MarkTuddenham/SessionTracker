@@ -46,7 +46,13 @@ function displayTrackedWindows() {
         function (store) {
             for (let w in store.tracking) {
                 if (store.tracking[w]) {
-                    tabsList.appendChild(createWindowRow(w));
+                    chrome.windows.getCurrent(
+                        function (win) {
+                            tabsList.appendChild(
+                                // w is a string and win.id a number so need "=="
+                                createWindowRow(w, win.id == w));
+                        }
+                    );
                 }
             }
         }
@@ -54,15 +60,22 @@ function displayTrackedWindows() {
 
 }
 
-function createWindowRow(windowId) {
+function createWindowRow(windowId, isCurrentWindow) {
     let para = document.createElement('P');
 
     let textBox = document.createElement("input");
     let close = document.createElement('button');
     let open = document.createElement('button');
 
-    textBox.setAttribute('class', 'w-3/4 border-0');
     textBox.setAttribute('type', 'text');
+    let textBoxClasses = 'w-3/4 border-0 px-2';
+    if (isCurrentWindow){
+        textBoxClasses += ' bg-purple-200 rounded';
+    }
+    console.log(isCurrentWindow)
+    console.log(textBoxClasses)
+    textBox.setAttribute('class', textBoxClasses) 
+
     getName(windowId, function (name) {
         textBox.setAttribute('value', name);
     });
